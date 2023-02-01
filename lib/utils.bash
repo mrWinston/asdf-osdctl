@@ -6,8 +6,8 @@ GH_REPO="https://github.com/openshift/osdctl"
 TOOL_NAME="osdctl"
 TOOL_TEST="osdctl version"
 
-OS_STRING="$(uname -m)"
-ARCH_STRING="$(uname -s)"
+OS_STRING="$(uname -s)"
+ARCH_STRING="$(uname -m)"
 
 fail() {
   echo -e "asdf-$TOOL_NAME: $*"
@@ -42,7 +42,7 @@ download_release() {
   local version filename url
   version="$1"
   filename="$2"
-  url="$GH_REPO/release/download/v${version}/${TOOL_NAME}_${version}_${OS_STRING}_${ARCH_STRING}.tar.gz"
+  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}_${version}_${OS_STRING}_${ARCH_STRING}.tar.gz"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
