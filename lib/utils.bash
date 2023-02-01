@@ -2,10 +2,12 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for osdctl.
 GH_REPO="https://github.com/openshift/osdctl"
 TOOL_NAME="osdctl"
 TOOL_TEST="osdctl version"
+
+OS_STRING="$(uname -m)"
+ARCH_STRING="$(uname -s)"
 
 fail() {
   echo -e "asdf-$TOOL_NAME: $*"
@@ -27,7 +29,7 @@ sort_versions() {
 list_github_tags() {
   git ls-remote --tags --refs "$GH_REPO" |
     grep -o 'refs/tags/.*' | cut -d/ -f3- |
-    sed 's/^v//' # NOTE: You might want to adapt this sed to remove non-version strings from tags
+    sed 's/^v//'
 }
 
 list_all_versions() {
@@ -41,8 +43,7 @@ download_release() {
   version="$1"
   filename="$2"
 
-  # TODO: Adapt the release URL convention for osdctl
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  url="$GH_REPO/archive/${TOOL_NAME}_${version}_${OS_STRING}_${ARCH_STRING}.tar.gz"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -61,7 +62,6 @@ install_version() {
     mkdir -p "$install_path"
     cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-    # TODO: Assert osdctl executable exists.
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
     test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
