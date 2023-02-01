@@ -4,7 +4,7 @@ set -euo pipefail
 
 GH_REPO="https://github.com/openshift/osdctl"
 TOOL_NAME="osdctl"
-TOOL_TEST="osdctl version"
+TOOL_TEST="osdctl help"
 
 OS_STRING="$(uname -s)"
 ARCH_STRING="$(uname -m)"
@@ -45,7 +45,7 @@ download_release() {
   url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}_${version}_${OS_STRING}_${ARCH_STRING}.tar.gz"
 
   echo "* Downloading $TOOL_NAME release $version..."
-  curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
+  curl "${curl_opts[@]}" -L -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
 install_version() {
