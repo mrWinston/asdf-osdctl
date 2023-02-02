@@ -23,8 +23,6 @@
 Plugin:
 
 ```shell
-asdf plugin add osdctl
-# or
 asdf plugin add osdctl https://github.com/mrWinston/asdf-osdctl.git
 ```
 
